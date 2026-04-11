@@ -16,6 +16,13 @@ import (
 
 func InitRouters() *gin.Engine {
 	r := gin.New()
+	// 健康检查端点（Docker HEALTHCHECK 使用）
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{"status": "ok", "service": "dev-portfolio-api"})
+	})
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{"status": "ok", "service": "dev-portfolio-api"})
+	})
 	// 初始化Trace中间件
 	r.Use(func(c *gin.Context) {
 		requestID := uuid.New().String()

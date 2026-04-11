@@ -152,7 +152,7 @@ func initSqlite(cfg *gorm.Config) (*gorm.DB, error) {
 // migrate 自动迁移表结构
 func migrate() {
 	global.Log.Info("开始自动迁移表结构...")
-	global.DB.AutoMigrate(
+	err := global.DB.AutoMigrate(
 		&models.User{},
 		&models.ProfileInfo{},
 		&models.ProfileSocial{},
@@ -163,4 +163,9 @@ func migrate() {
 		&models.BlogPost{},
 		&models.BlogAttachment{},
 	)
+	if err != nil {
+		global.Log.Error(fmt.Sprintf("AutoMigrate 失败: %v", err))
+		panic(err)
+	}
+	global.Log.Info("表结构迁移完成")
 }

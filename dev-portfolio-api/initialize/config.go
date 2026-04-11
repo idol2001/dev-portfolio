@@ -13,9 +13,9 @@ import (
 const (
 	configType  = "yml"
 	configPath  = "./configs"
-	devConfig   = "config.se.yml"
-	stageConfig = "config.st.yml"
-	prodConfig  = "config.prd.yml"
+	devConfig   = "config.se"
+	stageConfig = "config.st"
+	prodConfig  = "config.prd"
 )
 
 // 初始化配置文件
