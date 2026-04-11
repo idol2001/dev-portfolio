@@ -26,10 +26,8 @@ dist/
 Dockerfile
 .dockerignore
 
-# Config files (not needed in production)
-vite.config.js
-tailwind.config.js
-postcss.config.js
+# Server-side config only (NOT build configs)
+# vite.config.js, tailwind.config.js, postcss.config.js 构建时需要，不能排除
 
 # Docs
 README.md
