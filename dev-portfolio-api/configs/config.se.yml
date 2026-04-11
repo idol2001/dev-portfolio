@@ -4,6 +4,8 @@ system:
   app-name: go-gin-rest-api
   # 系统环境
   run-mode: se
+  # 数据库类型: sqlite, mysql
+  db-type: sqlite
   # url前缀
   url-path-prefix: api
   # 程序监听端口
@@ -27,6 +29,12 @@ logs:
   max-age: 30
   # 是否压缩
   compress: false
+
+# SQLite 配置 (当 db-type: sqlite 时生效)
+sqlite:
+  file: "data/portfolio.db"    # SQLite 数据库文件路径
+
+# MySQL 配置 (当 db-type: mysql 时生效)
 mysql:
   # 用户名（优先读取环境变量 MYSQL_USERNAME）
   username: ""

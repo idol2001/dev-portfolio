@@ -30,9 +30,10 @@ WORKDIR /root/
 # 从构建阶段复制二进制和配置文件
 COPY --from=builder /app/main .
 COPY --from=builder /app/configs ./configs
+COPY --from=builder /app/init-sqlite.sql .
 
 # 创建 uploads 和 logs 目录
-RUN mkdir -p uploads logs
+RUN mkdir -p uploads logs data
 
 # 暴露端口
 EXPOSE 8080

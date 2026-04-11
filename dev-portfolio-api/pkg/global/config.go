@@ -8,6 +8,7 @@ type Configuration struct {
 	System    SystemConfiguration    `mapstructure:"system" json:"system"`
 	Logs      LogsConfiguration      `mapstructure:"logs" json:"logs"`
 	Mysql     *MysqlConfiguration    `mapstructure:"mysql" json:"mysql"`
+	Sqlite    SqliteConfiguration    `mapstructure:"sqlite" json:"sqlite"`
 	Pgsql     *PgsqlConfiguration    `mapstructure:"pgsql" json:"pgsql"`
 	Casbin    CasbinConfiguration    `mapstructure:"casbin" json:"casbin"`
 	Jwt       JwtConfiguration       `mapstructure:"jwt" json:"jwt"`
@@ -19,6 +20,7 @@ type Configuration struct {
 type SystemConfiguration struct {
 	AppName       string `mapstructure:"app-name" json:"appName"`
 	RunMode       string `mapstructure:"run-mode" json:"runMode"`
+	DbType        string `mapstructure:"db-type" json:"dbType"`
 	UrlPathPrefix string `mapstructure:"url-path-prefix" json:"urlPathPrefix"`
 	Port          int    `mapstructure:"port" json:"port"`
 	BaseApi       string `mapstructure:"base-api" json:"baseApi"`
@@ -82,11 +84,16 @@ type CasdoorConfiguration struct {
 
 // AliyunOssConfiguration 阿里云 OSS 配置
 type AliyunOssConfiguration struct {
-	Enable       bool   `mapstructure:"enable" json:"enable"`
-	Endpoint     string `mapstructure:"endpoint" json:"endpoint"`
-	AccessKeyId  string `mapstructure:"access-key-id" json:"accessKeyId"`
+	Enable          bool   `mapstructure:"enable" json:"enable"`
+	Endpoint        string `mapstructure:"endpoint" json:"endpoint"`
+	AccessKeyId     string `mapstructure:"access-key-id" json:"accessKeyId"`
 	AccessKeySecret string `mapstructure:"access-key-secret" json:"accessKeySecret"`
-	BucketName   string `mapstructure:"bucket-name" json:"bucketName"`
-	BucketDomain string `mapstructure:"bucket-domain" json:"bucketDomain"`
-	DirPrefix    string `mapstructure:"dir-prefix" json:"dirPrefix"`
+	BucketName      string `mapstructure:"bucket-name" json:"bucketName"`
+	BucketDomain    string `mapstructure:"bucket-domain" json:"bucketDomain"`
+	DirPrefix       string `mapstructure:"dir-prefix" json:"dirPrefix"`
+}
+
+// SqliteConfiguration SQLite 配置
+type SqliteConfiguration struct {
+	File string `mapstructure:"file" json:"file"`
 }

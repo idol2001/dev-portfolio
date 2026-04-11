@@ -13,6 +13,7 @@ dev-portfolio-api/main
 dev-portfolio-api/*.exe
 dev-portfolio-api/logs/
 dev-portfolio-api/uploads/
+dev-portfolio-api/data/
 
 # ============================================================
 # Node.js

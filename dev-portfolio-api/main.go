@@ -16,7 +16,7 @@ func init() {
 
 	initialize.InitConfig()
 	initialize.Logger()
-	initialize.Mysql()
+	initialize.InitDatabase()
 }
 
 // 入口函数
