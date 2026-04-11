@@ -13,14 +13,16 @@ ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 
 WORKDIR /app
 
-# 复制 package.json 和 package-lock.json（利用 Docker 缓存层）
+# Copy package.json
 COPY package*.json ./
-RUN npm ci --ignore-scripts
 
-# 复制源代码
+# Install dependencies (using install instead of ci for robustness in Docker builds)
+RUN npm install
+
+# Copy source code
 COPY . .
 
-# 构建生产版本
+# Build production version
 RUN npm run build
 
 # ============================================================
