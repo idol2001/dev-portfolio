@@ -1,0 +1,83 @@
+version: '3.8'
+
+# ============================================================
+# dev-portfolio Docker Compose
+# 部署说明: 见 DEPLOY.md
+# ============================================================
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: dev-portfolio-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass123}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-dev-portfolio}
+      MYSQL_USER: ${MYSQL_USERNAME:-portfolio}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-portfolio123}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - dev-portfolio-network
+
+  api:
+    build:
+      context: ./dev-portfolio-api
+      dockerfile: Dockerfile
+    container_name: dev-portfolio-api
+    restart: always
+    # 从 .env 文件加载环境变量（注入到容器）
+    env_file:
+      - ./dev-portfolio-api/.env
+    environment:
+      # 覆盖 .env 中的 MySQL 地址，指向 Docker 内的 mysql 服务
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+    ports:
+      - "${API_PORT:-8080}:8080"
+    volumes:
+      - api-uploads:/root/uploads     # 本地上传文件持久化（未启用 OSS 时）
+      - api-logs:/root/logs           # 日志持久化
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - dev-portfolio-network
+
+  web:
+    build:
+      context: ./dev-portfolio-web
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080/dev-portfolio}
+    container_name: dev-portfolio-web
+    restart: always
+    ports:
+      - "${WEB_PORT:-3000}:80"
+    depends_on:
+      - api
+    networks:
+      - dev-portfolio-network
+
+volumes:
+  mysql-data:       # MySQL 数据持久化
+  api-uploads:      # 本地上传文件（未启用 OSS 时）
+  api-logs:         # 应用日志
+
+networks:
+  dev-portfolio-network:
+    driver: bridge
