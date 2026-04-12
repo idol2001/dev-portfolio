@@ -38,14 +38,14 @@ func InitConfig() {
 	// 绑定环境变量
 	v.AutomaticEnv()
 
-	// 显式绑定阿里云 OSS 环境变量（确保 viper 能识别嵌套 key 的扁平环境变量）
-	v.BindEnv("aliyun_oss.enable", "ALIYUNOSS_ENABLE")
-	v.BindEnv("aliyun_oss.endpoint", "ALIYUNOSS_ENDPOINT")
-	v.BindEnv("aliyun_oss.access_key_id", "ALIYUNOSS_ACCESS_KEY_ID")
-	v.BindEnv("aliyun_oss.access_key_secret", "ALIYUNOSS_ACCESS_KEY_SECRET")
-	v.BindEnv("aliyun_oss.bucket_name", "ALIYUNOSS_BUCKET_NAME")
-	v.BindEnv("aliyun_oss.bucket_domain", "ALIYUNOSS_BUCKET_DOMAIN")
-	v.BindEnv("aliyun_oss.dir_prefix", "ALIYUNOSS_DIR_PREFIX")
+	// 显式绑定阿里云 OSS 环境变量（key 必须与 YAML 中的层级一致）
+	v.BindEnv("aliyun-oss.enable", "ALIYUNOSS_ENABLE")
+	v.BindEnv("aliyun-oss.endpoint", "ALIYUNOSS_ENDPOINT")
+	v.BindEnv("aliyun-oss.access-key-id", "ALIYUNOSS_ACCESS_KEY_ID")
+	v.BindEnv("aliyun-oss.access-key-secret", "ALIYUNOSS_ACCESS_KEY_SECRET")
+	v.BindEnv("aliyun-oss.bucket-name", "ALIYUNOSS_BUCKET_NAME")
+	v.BindEnv("aliyun-oss.bucket-domain", "ALIYUNOSS_BUCKET_DOMAIN")
+	v.BindEnv("aliyun-oss.dir-prefix", "ALIYUNOSS_DIR_PREFIX")
 	err := v.ReadInConfig()
 	if err != nil {
 		panic(fmt.Sprintf("初始化配置文件失败: %v", err))
