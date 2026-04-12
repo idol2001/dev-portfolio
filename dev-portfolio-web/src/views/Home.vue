@@ -1,13 +1,13 @@
 <template>
-  <div class="min-h-screen text-white transition-colors duration-300"
-       :class="isDark ? 'bg-gradient-to-br from-gray-900 to-gray-800' : 'bg-gradient-to-br from-gray-50 to-white text-gray-900'">
+  <div class="min-h-screen transition-colors duration-300"
+       :class="isDark ? 'bg-gradient-to-br from-gray-900 to-gray-800 text-white' : 'bg-gradient-to-br from-gray-50 to-white text-gray-900'">
     <AppNav />
 
     <!-- Hero Section -->
     <section class="flex items-center justify-center min-h-screen px-4">
       <div class="text-center">
         <h1 class="text-5xl md:text-7xl font-bold mb-4">{{ profile.name || 'Jacob Lee' }}</h1>
-        <p class="text-xl md:text-2xl text-gray-300 mb-8 min-h-[2rem]">
+        <p class="text-xl md:text-2xl mb-8 min-h-[2rem]" :class="isDark ? 'text-gray-300' : 'text-gray-600'">
           <span class="typing-text">{{ typedText }}</span><span class="typing-cursor" :class="{ 'typing-blink': showCursor }">|</span>
         </p>
 
