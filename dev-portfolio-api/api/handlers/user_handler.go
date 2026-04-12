@@ -4,6 +4,9 @@ import (
 	"dev-portfolio-api/internal/services"
 	"dev-portfolio-api/models"
 	"strconv"
+	"strings"
+
+	cryptoPkg "dev-portfolio-api/pkg/crypto"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -37,8 +40,15 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
+	// 解密密码（如果已加密）
+	password, err := decryptPasswordIfNeeded(req.Password)
+	if err != nil {
+		models.FailWithMessage("密码解密失败", c)
+		return
+	}
+
 	// 密码加密
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), 14)
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	if err != nil {
 		models.FailWithMessage("密码加密失败", c)
 		return
@@ -101,7 +111,18 @@ func ChangePassword(c *gin.Context) {
 		return
 	}
 
-	if err := services.ChangePassword(uint(id), req.NewPassword); err != nil {
+	// 解密密码（如果已加密）
+	password := req.NewPassword
+	if strings.HasPrefix(password, "ENC:") {
+		encoded := strings.TrimPrefix(password, "ENC:")
+		password, err = cryptoPkg.DecryptPassword(encoded)
+		if err != nil {
+			models.FailWithMessage("密码解密失败", c)
+			return
+		}
+	}
+
+	if err := services.ChangePassword(uint(id), password); err != nil {
 		models.FailWithMessage("修改密码失败："+err.Error(), c)
 		return
 	}

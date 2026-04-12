@@ -24,7 +24,7 @@ RUN go mod tidy && CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o main .
 # --- 运行阶段 ---
 FROM alpine:3.20
 
-RUN apk --no-cache add ca-certificates tzdata
+RUN apk --no-cache add ca-certificates tzdata sqlite
 
 WORKDIR /root/
 

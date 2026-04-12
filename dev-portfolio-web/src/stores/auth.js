@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { login as apiLogin, getCurrentUser } from '../api'
+import { encryptPassword, clearEncryptor } from '../utils/crypto'
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref(localStorage.getItem('token') || '')
@@ -10,7 +11,9 @@ export const useAuthStore = defineStore('auth', () => {
   
   async function login(username, password) {
     try {
-      const res = await apiLogin(username, password)
+      // RSA 加密密码
+      const encryptedPassword = await encryptPassword(password)
+      const res = await apiLogin(username, encryptedPassword)
       token.value = res.data.data.token
       user.value = res.data.data.user
       localStorage.setItem('token', token.value)
@@ -27,6 +30,7 @@ export const useAuthStore = defineStore('auth', () => {
     token.value = ''
     user.value = null
     localStorage.removeItem('token')
+    clearEncryptor()
   }
   
   async function checkAuth() {

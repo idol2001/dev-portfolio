@@ -95,6 +95,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { getUsers, createUser, updateUser, changePassword, deleteUser } from '../../api'
+import { encryptPassword } from '../../utils/crypto'
 
 const users = ref([])
 const showAddUser = ref(false)
@@ -166,7 +167,8 @@ async function handleChangePassword() {
     return
   }
   try {
-    await changePassword(currentPasswordUserId.value, { password: newPassword.value })
+    const encryptedPassword = await encryptPassword(newPassword.value)
+    await changePassword(currentPasswordUserId.value, { new_password: encryptedPassword })
     cancelChangePassword()
     showMessage('Password changed')
   } catch (error) {

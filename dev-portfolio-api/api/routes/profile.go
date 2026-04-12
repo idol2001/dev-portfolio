@@ -12,6 +12,7 @@ func InitProfileRouter(r *gin.RouterGroup) {
 	auth := r.Group("auth")
 	{
 		auth.POST("/login", handlers.Login)
+		auth.GET("/public-key", handlers.GetPublicKey)
 	}
 
 	// 公开访问的路由（前台展示用）
