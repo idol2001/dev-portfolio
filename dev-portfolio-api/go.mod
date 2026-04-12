@@ -1,6 +1,6 @@
 module dev-portfolio-api
 
-go 1.25.1
+go 1.23
 
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v3.0.2+incompatible
