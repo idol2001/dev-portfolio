@@ -51,7 +51,7 @@
             <router-link
               :to="item.href"
               class="block px-3 py-2 rounded-md text-base transition"
-              :class="isDark ? 'hover:bg-gray-700/50 hover:text-blue-400' : 'hover:bg-gray-100 hover:text-blue-600'"
+              :class="isDark ? 'text-gray-300 hover:bg-gray-700/50 hover:text-blue-400' : 'text-gray-700 hover:bg-gray-100 hover:text-blue-600'"
               @click="menuOpen = false"
             >
               {{ item.title }}

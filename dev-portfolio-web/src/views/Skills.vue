@@ -1,6 +1,6 @@
 <template>
-  <div class="min-h-screen text-white transition-colors duration-300"
-       :class="isDark ? 'bg-gradient-to-br from-gray-900 to-gray-800' : 'bg-gradient-to-br from-gray-50 to-white text-gray-900'">
+  <div class="min-h-screen transition-colors duration-300"
+       :class="isDark ? 'bg-gradient-to-br from-gray-900 to-gray-800 text-white' : 'bg-gradient-to-br from-gray-50 to-white text-gray-900'">
     <AppNav />
 
     <div class="pt-24 pb-12 px-4 max-w-6xl mx-auto">
