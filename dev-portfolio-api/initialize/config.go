@@ -34,9 +34,18 @@ func InitConfig() {
 	v.SetConfigName(configName)
 	v.SetConfigType(configType)
 	v.AddConfigPath(configPath)
-	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	v.SetEnvKeyReplacer(strings.NewReplacer("-", "_", ".", "_"))
 	// 绑定环境变量
 	v.AutomaticEnv()
+
+	// 显式绑定阿里云 OSS 环境变量（确保 viper 能识别嵌套 key 的扁平环境变量）
+	v.BindEnv("aliyun_oss.enable", "ALIYUNOSS_ENABLE")
+	v.BindEnv("aliyun_oss.endpoint", "ALIYUNOSS_ENDPOINT")
+	v.BindEnv("aliyun_oss.access_key_id", "ALIYUNOSS_ACCESS_KEY_ID")
+	v.BindEnv("aliyun_oss.access_key_secret", "ALIYUNOSS_ACCESS_KEY_SECRET")
+	v.BindEnv("aliyun_oss.bucket_name", "ALIYUNOSS_BUCKET_NAME")
+	v.BindEnv("aliyun_oss.bucket_domain", "ALIYUNOSS_BUCKET_DOMAIN")
+	v.BindEnv("aliyun_oss.dir_prefix", "ALIYUNOSS_DIR_PREFIX")
 	err := v.ReadInConfig()
 	if err != nil {
 		panic(fmt.Sprintf("初始化配置文件失败: %v", err))
