@@ -1,0 +1,40 @@
+[Unit]
+Description=Dev Portfolio API Service
+Documentation=https://github.com/idol2001/dev-portfolio
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/portfolio
+ExecStart=/opt/portfolio/bin/dev-portfolio-api
+
+# 环境变量
+Environment="RunMode=prd"
+Environment="GIN_MODE=release"
+
+# 重启策略
+Restart=on-failure
+RestartSec=5
+StartLimitBurst=5
+StartLimitIntervalSec=60
+
+# 资源限制
+LimitNOFILE=65536
+LimitNPROC=4096
+
+# 安全加固
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/portfolio/data /opt/portfolio/logs /opt/portfolio/uploads
+
+# 日志
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=dev-portfolio
+
+[Install]
+WantedBy=multi-user.target

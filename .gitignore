@@ -48,3 +48,6 @@ Thumbs.db
 *.out
 coverage/
 keys/
+
+# Deployment data
+/data/

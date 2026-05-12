@@ -2,6 +2,8 @@ package main
 
 // 导入gin包
 import (
+	"os"
+
 	"dev-portfolio-api/initialize"
 	. "dev-portfolio-api/pkg/global"
 
@@ -23,9 +25,22 @@ func init() {
 func main() {
 	// 初始化一个http服务对象
 	r := initialize.InitRouters()
-	gin.SetMode(gin.DebugMode)
-	// host := "0.0.0.0"
-	// port := 8080
-	Log.Info("Server is running ...")
+
+	// 根据配置设置 Gin 运行模式（支持环境变量覆盖）
+	// 优先级：GIN_MODE 环境变量 > 配置文件 system.run-mode > 默认 debug
+	ginMode := global.Conf.System.RunMode
+	if envMode := os.Getenv("GIN_MODE"); envMode != "" {
+		ginMode = envMode
+	}
+	switch ginMode {
+	case "prd", "release", "prod":
+		gin.SetMode(gin.ReleaseMode)
+	case "st", "test":
+		gin.SetMode(gin.TestMode)
+	default:
+		gin.SetMode(gin.DebugMode) // 本地开发默认
+	}
+
+	Log.Info("Server is running ...", "mode", gin.Mode())
 	r.Run()
 }
